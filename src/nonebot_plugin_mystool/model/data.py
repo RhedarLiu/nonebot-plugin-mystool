@@ -154,21 +154,30 @@ class BBSCookies(BaseModelWithSetter, BaseModelWithUpdate):
 
     @stoken.setter
     def stoken(self, value):
+        # 合并部分 Cookie 时可能没有 stoken；此时保留原值而不是对 None 调用 startswith。
+        if not value:
+            return
         if value.startswith("v2_"):
             self.stoken_v2 = value
         else:
             self.stoken_v1 = value
 
     def update(self, cookies: Union[Dict[str, str], Cookies, "BBSCookies"]):
-        """
-        更新Cookies
-        """
-        if not isinstance(cookies, BBSCookies):
-            self.stoken = cookies.get("stoken") or self.stoken
-            self.bbs_uid = cookies.get("bbs_uid") or self.bbs_uid
-            cookies.pop("stoken", None)
-            cookies.pop("bbs_uid", None)
-        return super().update(cookies)
+        """更新 Cookies，仅合并有值的字段，并且不修改调用方传入的字典。"""
+        if isinstance(cookies, BBSCookies):
+            cookies = cookies.dict(exclude_none=True)
+        else:
+            cookies = dict(cookies)
+
+        stoken = cookies.pop("stoken", None)
+        bbs_uid = cookies.pop("bbs_uid", None)
+        if stoken:
+            self.stoken = stoken
+        if bbs_uid:
+            self.bbs_uid = bbs_uid
+
+        # 部分登录结果中的 None 不应覆盖原来仍然有效的 Cookie。
+        return super().update({key: value for key, value in cookies.items() if value is not None})
 
     def dict(self, *,
              include: Optional[Union['AbstractSetIntStr', 'MappingIntStrAny']] = None,

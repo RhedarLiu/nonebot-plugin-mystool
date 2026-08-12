@@ -13,7 +13,7 @@ __all__ = ["root_path", "data_path", "BaseModelWithSetter", "BaseModelWithUpdate
            "Award", "GameSignInfo", "MissionData", "MissionState", "GenshinNote", "StarRailNote", "GenshinNoteNotice",
            "StarRailNoteNotice", "BaseApiStatus", "CreateMobileCaptchaStatus", "GetCookieStatus", "GetGoodDetailStatus",
            "ExchangeStatus", "MissionStatus", "GetFpStatus", "BoardStatus", "GenshinNoteStatus", "StarRailNoteStatus",
-           "QueryGameTokenQrCodeStatus", "GeetestResult", "GeetestResultV4", "CommandUsage"]
+           "GeetestResult", "GeetestResultV4", "CommandUsage"]
 
 root_path = Path(__name__).parent.absolute()
 '''NoneBot2 机器人根目录'''
@@ -623,18 +623,6 @@ class StarRailNoteStatus(BoardStatus):
     """
     no_starrail_account = False
     """用户没有任何星铁账户"""
-
-
-class QueryGameTokenQrCodeStatus(BaseApiStatus):
-    """
-    星铁实时便笺 返回结果
-    """
-    qrcode_expired = False
-    """二维码已过期"""
-    qrcode_init = False
-    """二维码未扫描"""
-    qrcode_scanned = False
-    """二维码已扫描但未确认"""
 
 
 GeetestResult = NamedTuple("GeetestResult", validate=str, seccode=str)

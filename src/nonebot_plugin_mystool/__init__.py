@@ -18,7 +18,8 @@ __plugin_meta__ = PluginMetadata(
     homepage="https://github.com/Ljzd-PRO/nonebot-plugin-mystool",
     supported_adapters={"~onebot.v11", "~qq"},
     usage=
-    f"\n🔐 {_command_begin}登录 ➢ 登录绑定米游社账户"
+    f"\n🔐 {_command_begin}登录 ➢ 米游社 App 扫码绑定米游社账户"
+    f"\n🔑 {_command_begin}账密登录 ➢ 使用米哈游通行证账号密码绑定"
     f"\n📦 {_command_begin}地址 ➢ 设置收货地址ID"
     f"\n🗓️ {_command_begin}签到 ➢ 手动进行游戏签到"
     f"\n📅 {_command_begin}任务 ➢ 手动执行米游币任务"

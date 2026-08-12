@@ -97,12 +97,16 @@ class Preference(BaseModel):
     """是否启用管理员名单"""
     admin_list_path: Optional[Path] = data_path / "admin_list.txt"
     """管理员名单文件路径"""
-    game_token_app_id: str = "2"
-    """米游社二维码登录的应用标识符"""
-    qrcode_query_interval: float = 1
+    qrcode_query_interval: float = 5
     """检查米游社登录二维码扫描情况的请求间隔（单位：秒）"""
-    qrcode_wait_time: float = 120
+    qrcode_wait_time: float = 300
     """等待米游社登录二维码扫描的最长时间（单位：秒）"""
+
+    @validator("qrcode_query_interval", "qrcode_wait_time", allow_reuse=True)
+    def validate_qrcode_time(cls, value: float):
+        if value <= 0:
+            raise ValueError("二维码登录轮询时间必须大于 0")
+        return value
 
     @validator("log_path", allow_reuse=True)
     def _(cls, v: Optional[Path]):
